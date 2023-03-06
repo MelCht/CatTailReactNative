@@ -2,11 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ActivityIndicator, Image, FlatList, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CatTail from './component/Header';
+import CatBottom from './component/Footer';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'antiquewhite',
     // alignItems: 'center',
   },
   img: {
@@ -72,9 +73,9 @@ export default function App() {
 
 
   return (
-    <>
+    <View style={styles.container}>
     <CatTail />
-    <ScrollView style={styles.container}>
+    <ScrollView >
       {isLoading ? (
         <ActivityIndicator />
       ) : (
@@ -83,21 +84,22 @@ export default function App() {
           <FlatList
           data={dataList}
           style={styles.flatlist}
+          keyExtractor={(index) => index.toString()}
           renderItem={({ item }) => (
             <View style={styles.drinkCard}>
               <>
-              <Image style={styles.catEars} source={                                                                                                                                                                                                                         require('./assets/catEars.png')}/>
+              <Image style={styles.catEars} source={require('./assets/catEars.png')}/>
                 <Image style={styles.img} source={{ uri: item.drinks[0].strDrinkThumb }} />
               </>
               <Text>{item.drinks[0].strDrink}</Text>
             </View>
           )}
-          keyExtractor={(item, index) => index.toString()}
         />
         </>
       )}
     </ScrollView>
-    </>
+    <CatBottom/>
+    </View>
   );
 }
 
