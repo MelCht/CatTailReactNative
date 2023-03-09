@@ -34,7 +34,11 @@ const styles = StyleSheet.create({
 })
 
 export default function DetailScreen({ route, navigation }) { 
-    const { instruction, ingrédients, pic, name } = route.params;
+    const { instruction, ingrédients, pic, name, quantités } = route.params;
+    const ingrédientsQuantités = ingrédients.map((ingrédient, index) => ({
+      ingrédient: ingrédient,
+      quantité: quantités[index],
+    }));
     return (
       <>
         <View style={styles.pic}>
@@ -44,12 +48,12 @@ export default function DetailScreen({ route, navigation }) {
         </View>
       <Text style={styles.instruction}>Instructions : {instruction}</Text>
       <FlatList
-        data={ingrédients}
+        data={ingrédientsQuantités}
         keyExtractor={(item, id) => id.toString()}
         renderItem={({ item }) => (
           <View style={styles.puce}>
-            {item ? <MaterialCommunityIcons name="paw" size={25} color={'black'}/> : null}
-            <Text>{item}</Text>
+            {item.ingrédient && item.quantité ? <MaterialCommunityIcons name="paw" size={25} color={'black'}/> : null}
+            <Text>{item.ingrédient} {item.ingrédient && item.quantité ? <Text>:</Text> : null} {item.quantité}</Text>
           </View>
         )}
       />
