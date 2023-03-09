@@ -16,7 +16,7 @@ const Stack = createStackNavigator();
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'antiquewhite',
+    backgroundColor: '#E6E6E6',
   }
 });
 
