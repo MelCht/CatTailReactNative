@@ -3,12 +3,14 @@ import React, {useEffect, useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeList from './component/CocktailListHome';
 import Nyuser from './component/User';
-import Detail from './component/Detail';
+import DetailScreen from './component/Detail';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 
 const styles = StyleSheet.create({
@@ -58,7 +60,7 @@ export default function App() {
         <Tab.Navigator >
         <Tab.Screen
           name="CatTail"
-          component={HomeScreen}
+          component={HomeStack}
           initialParams={{ dataList : dataList }}
           options={{
             tabBarIcon: () => (
@@ -88,13 +90,25 @@ export default function App() {
   );
 }
 
-function HomeScreen(props) {
+
+function HomeStack(props) {
+
   return (
-    <>
-      <HomeList route={props.route}/>
-    </>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="10 cocktails pour vous 🐈‍⬛"
+        component={HomeList}
+        initialParams={{ dataList: props.route.params.dataList}}
+      />
+      <Stack.Screen
+        name="DetailScreen"
+        component={DetailScreen}
+        options={{ title: 'Détails' }}
+        initialParams={{ dataList: props.route.params.dataList}}
+      />
+    </Stack.Navigator>
   );
-}  
+}
 
 function NyuserScreen() {
   return (

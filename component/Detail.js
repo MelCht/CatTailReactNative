@@ -1,11 +1,18 @@
-import { Text, View } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 
-export default function Detail ({ navigation, route }) {
-    // const { drinkId } = route.params;
-  
+export default function DetailScreen({ route, navigation }) { 
+    const { id, instruction, ingrédients } = route.params;
+    {console.log(ingrédients)}
     return (
-      <View>
-        <Text>Détail</Text>
-      </View>
-    );
-  };
+      <>
+      <Text>Instructions : {instruction}</Text>
+      <FlatList
+        data={ingrédients}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <Text>{}</Text>
+        )}
+      />
+    </>      
+    )
+  }

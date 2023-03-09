@@ -1,8 +1,7 @@
 import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
 
-const RootStack = createStackNavigator();
 
 const styles = StyleSheet.create({
   title: {
@@ -38,12 +37,12 @@ const styles = StyleSheet.create({
 
 
 
-export default function HomeList (props, navigation) {
+export default function HomeList (props) {
     const { dataList } = props.route.params 
+    const navigation = useNavigation()
 
     return (
-    <>
-      <Text style={styles.title}>10 cocktails pour vous 🐈‍⬛  </Text>         
+    <>     
       <FlatList
         data={dataList}
         style={styles.flatlist}
@@ -51,15 +50,14 @@ export default function HomeList (props, navigation) {
         renderItem={({ item }) => (
           <View style={styles.drinkCard}>
             <>
-              <Image style={styles.catEars} source={require('../assets/catEars.png')}/>     
-                <RootStack.Group>
-                  <RootStack.Screen name="CoktailPic" component={CocktailPicScreen} />
-                </RootStack.Group>
-                <RootStack.Group screenOptions={{ presentation: 'modal' }}>
-                  <RootStack.Screen name="MyModal" component={ModalScreen} />
-                </RootStack.Group>
+              <TouchableOpacity style={styles.drinkCard} onPress={() => navigation.navigate('DetailScreen', { id: item.drinks[0].idDrink ,instruction: item.drinks[0].strInstructions, ingrédients: [item.drinks[0].strIngredient1, item.drinks[0].strIngredient2, item.drinks[0].strIngredient3, item.drinks[0].strIngredient4, item.drinks[0].strIngredient5, item.drinks[0].strIngredient6, item.drinks[0].strIngredient7, item.drinks[0].strIngredient8, item.drinks[0].strIngredient9] })}>
+              <>
+                <Image style={styles.catEars} source={require('../assets/catEars.png')} />
+                <Image style={styles.img} source={{ uri: item.drinks[0].strDrinkThumb }}/>
+              </>
+                <Text>{item.drinks[0].strDrink}</Text>
+              </TouchableOpacity>  
             </>
-            <Text>{item.drinks[0].strDrink}</Text>  
           </View>
         )}
       />
@@ -67,21 +65,4 @@ export default function HomeList (props, navigation) {
     )
 }
 
-function CocktailPicScreen({ route, navigation }) { 
-  // const { item } = route.params;
-  // {console.log(item)}
-  return (
-    <>
-    <Text> Oskour </Text>
-      {/* <Image style={styles.img} source={{ uri: item.drinks[0].strDrinkThumb }} onPress={() => navigation.navigate('MyModal')}/> */}
-   </> 
-  )
-}
 
-function ModalScreen() {
-  return (
-    <View>
-      <Text>Details</Text>
-    </View>
-  );
-}
