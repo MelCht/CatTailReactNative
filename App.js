@@ -1,43 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ActivityIndicator, Image, FlatList, ScrollView} from 'react-native';
+import { StyleSheet, View, ActivityIndicator, ScrollView, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import CatTail from './component/Header';
-import CatBottom from './component/Footer';
+import { NavigationContainer } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import HomeList from './component/CocktailListHome';
+import Nyuser from './component/User';
+import Detail from './component/Detail';
+
+const Tab = createBottomTabNavigator();
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'antiquewhite',
-    // alignItems: 'center',
-  },
-  img: {
-    height: 150,
-    width: 150,
-    borderRadius: 50,
-    position: 'relative',
-    marginTop: 25,
-    marginRight: 17
-  },
-  catEars: {
-    height: 125,
-    width: 300,
-    position: 'absolute'
-  },
-  title: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '5%',
-    textAlign: 'center'
-  },
-  flatlist: {
-    marginTop: '10%',
-    // borderColor: 'black',
-    // borderWidth: 15,
-    width: '100%',
-  },
-  drinkCard: {
-    alignItems: 'center',
-    marginTop: '5%'
   }
 });
 
@@ -74,32 +51,58 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-    <CatTail />
-    <ScrollView >
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <>
-          <Text style={styles.title}>10 cocktails pour vous 🐈‍⬛  </Text>         
-          <FlatList
-          data={dataList}
-          style={styles.flatlist}
-          keyExtractor={(index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.drinkCard}>
-              <>
-              <Image style={styles.catEars} source={require('./assets/catEars.png')}/>
-                <Image style={styles.img} source={{ uri: item.drinks[0].strDrinkThumb }} />
-              </>
-              <Text>{item.drinks[0].strDrink}</Text>
-            </View>
-          )}
+      <NavigationContainer>
+        <Tab.Navigator >
+        <Tab.Screen
+          name="CatTail"
+          component={HomeScreen}
+          initialParams={{ dataList : dataList }}
+          options={{
+            tabBarIcon: () => (
+              <MaterialCommunityIcons name="glass-cocktail" size={25} color={'white'}/>
+            ),
+            tabBarStyle: { backgroundColor: 'black' },
+            tabBarActiveTintColor: 'white',
+            tabBarInactiveTintColor: 'gray'
+          }}
         />
-        </>
+        <Tab.Screen
+          name="Nyutilisateur"
+          component={NyuserScreen}
+          options={{
+            tabBarIcon: () => (
+              <MaterialCommunityIcons name="cat" size={25} color={'white'}/>
+            ),
+            tabBarStyle: { backgroundColor: 'black' },
+            tabBarActiveTintColor: 'white',
+            tabBarInactiveTintColor: 'gray'
+          }}
+        />
+        </Tab.Navigator>
+      </NavigationContainer>
       )}
-    </ScrollView>
-    <CatBottom/>
     </View>
   );
 }
+
+function HomeScreen(props) {
+  return (
+    <>
+      <HomeList route={props.route}/>
+    </>
+  );
+}  
+
+function NyuserScreen() {
+  return (
+    <>
+      <Nyuser/>
+    </>
+  );
+}  
+
+
 
