@@ -7,7 +7,7 @@ import styles from './style';
 
 export default function HomeList (props) {
   // Récupération des props passé par App.js
-    const { dataList, getCocktail } = props.route.params 
+    const { getCocktail } = props.route.params 
     const [newDataList, setNewDataList] = useState(props.route.params.dataList);
     const navigation = useNavigation()
 

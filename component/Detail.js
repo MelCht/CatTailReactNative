@@ -1,8 +1,8 @@
-import { Text, View, FlatList, StyleSheet, Image } from 'react-native';
+import { Text, View, FlatList, Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import styles from './style';
 
-export default function DetailScreen({ route, navigation }) { 
+export default function DetailScreen({ route }) { 
   // Récupération de props envoyés par CocktailListHome
   const { instruction, ingrédients, pic, name, quantités } = route.params;
   // Fusion des tableaux ingrédients et quantités pour pouvoir concatener les données

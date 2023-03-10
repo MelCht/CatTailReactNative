@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, FlatList, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './style';
 
@@ -32,16 +32,16 @@ export default function Nyalcool (props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.searchBarContainer}>
+      <View style={styles.recherche}>
       <TextInput
-        style={styles.searchBar}
+        style={styles.input}
         onChangeText={setSearchText}
         value={searchText}
         placeholder="Search for cocktails"
         placeholderTextColor="#aaa"
       />
-      <TouchableOpacity style={styles.searchButton} onPress={searchCocktails}>
-        <Text style={styles.searchButtonText}>Search</Text>
+      <TouchableOpacity style={styles.button} onPress={searchCocktails}>
+        <Text style={styles.rechercheBouton}>Chercher</Text>
       </TouchableOpacity>
     </View>
       {cocktails.length > 0 && (

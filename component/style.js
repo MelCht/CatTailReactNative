@@ -58,6 +58,28 @@ const styles = StyleSheet.create({
     position: 'absolute',
     marginTop: '10%'
   },
+  recherche: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: '5%'
+  },
+  button: {
+    backgroundColor: 'white',
+    borderRadius: 50,
+    width: '20%'
+  },
+  input: {
+    width: '60%',
+    backgroundColor: 'black',
+    borderRadius: 25,
+    color: 'white',
+    marginRight: '3%',
+  },
+  rechercheBouton: {
+    marginTop: '5%',
+    marginLeft: '5%',
+  }
 });
 
 export default styles;
