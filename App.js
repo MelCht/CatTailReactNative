@@ -9,6 +9,8 @@ import HomeList from './component/CocktailListHome';
 import Nyuser from './component/User';
 import DetailScreen from './component/Detail';
 
+
+// Création des données necessaires pour la navigation
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -24,8 +26,9 @@ export default function App() {
 
   const [isLoading, setLoading] = useState(true);
   const [dataList, setDataList] = useState([]);
-  const [newDataList, setNewDataList] = useState([]);
 
+
+  // Récupération de l'api
   const getCocktail = async () => {
     try {
       const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php');
@@ -37,8 +40,8 @@ export default function App() {
     }
   };
 
-
-  const getData = async (pageNumber) => {
+// Récupération de 10 fois l'api stockée dans un tableau avec une vérification pour éviter les doublons
+  const getData = async () => {
     setLoading(true);
     const newDataList = [];
     for (let i = 0; i < 10; i++) {
@@ -52,15 +55,7 @@ export default function App() {
     setLoading(false);
   };
 
-    const onLoadMore = async () => {
-      const newDataList = [...dataList];
-      for (let i = 0; i < 10; i++) {
-        const data = await getCocktail();
-        newDataList.push(data);
-      }
-      setNewDataList(newDataList);
-      setDataList([...dataList, ...newDataList]);
-    };
+  
 
 
   useEffect(() => {
@@ -75,10 +70,11 @@ export default function App() {
       ) : (
       <NavigationContainer>
         <Tab.Navigator >
+          {/* Première navigation qui sert d'accueil */}
         <Tab.Screen
           name="CatTail"
           component={HomeStack}
-          initialParams={{ dataList : dataList, onLoadMore : onLoadMore }}
+          initialParams={{ dataList : dataList, getCocktail : getCocktail }}
           options={{
             tabBarIcon: () => (
               <MaterialCommunityIcons name="glass-cocktail" size={25} color={'white'}/>
@@ -88,6 +84,7 @@ export default function App() {
             tabBarInactiveTintColor: 'gray'
           }}
         />
+        {/* Navigation qui envoie sur la page utilisateur */}
         <Tab.Screen
           name="Nyutilisateur"
           component={NyuserScreen}
@@ -107,16 +104,18 @@ export default function App() {
   );
 }
 
-
+// Component qui permet l'affichage de la page d'accueil, avec une modale de navigation pour afficher les détails des cocktails
 function HomeStack(props) {
 
   return (
     <Stack.Navigator>
+      {/* Modale de navigation principale : la liste des cocktails, avec envoi des données necessaires */}
       <Stack.Screen
         name="10 cocktails pour vous 🐈‍⬛"
         component={HomeList}
         initialParams={{ dataList: props.route.params.dataList}}
       />
+      {/* Deuxième écran de la modale de navigation : la page détail, avec envoi des données necessaires */}
       <Stack.Screen
         name="DetailScreen"
         component={DetailScreen}
@@ -127,6 +126,7 @@ function HomeStack(props) {
   );
 }
 
+// Component pour afficher la page utilisateur
 function NyuserScreen() {
   return (
     <>

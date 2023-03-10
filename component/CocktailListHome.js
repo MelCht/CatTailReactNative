@@ -1,5 +1,6 @@
 import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 
 
 
@@ -35,12 +36,27 @@ const styles = StyleSheet.create({
 
 
 export default function HomeList (props) {
-    const { dataList, onLoadMore } = props.route.params 
+  // Récupération des props passé par App.js
+    const { dataList, getCocktail } = props.route.params 
+    const [oldDataList, setOldDataList] = useState([]);
+    const [newDataList, setNewDataList] = useState([]);
     const navigation = useNavigation()
+
+    // Fonction pour l'infinite scroll
+    const onLoadMore = async () => {
+      const scrollDataList = [...dataList];
+      for (let i = 0; i < 10; i++) {
+        const data = await getCocktail();
+        scrollDataList.push(data);
+      }
+      setOldDataList(scrollDataList);
+      setNewDataList([...dataList, ...oldDataList]);
+    };
     
 
     return (
     <>     
+    {/* Utilisation d'une flatlist pour boucler sur les json enregistré dans "dataList" affin de tous les afficher sur la page */}
       <FlatList
         data={dataList}
         style={styles.flatlist}
@@ -48,6 +64,7 @@ export default function HomeList (props) {
         renderItem={({ item }) => (
           <View style={styles.drinkCard}>
             <>
+            {/* Passage des données necessaires pour Detail.js */}
               <TouchableOpacity style={styles.drinkCard} onPress={() => navigation.navigate('DetailScreen', 
               { 
                 name:item.drinks[0].strDrink,  
@@ -86,6 +103,7 @@ export default function HomeList (props) {
             </>
           </View>
         )}
+        // Implémentation de l'infinite scroll (Non fonctionnel pour le moment)
         onEndReached={onLoadMore}
         onEndReachedThreshold={0.9}
       />

@@ -34,11 +34,14 @@ const styles = StyleSheet.create({
 })
 
 export default function DetailScreen({ route, navigation }) { 
+  // Récupération de props envoyés par CocktailListHome
     const { instruction, ingrédients, pic, name, quantités } = route.params;
+    // Fusion des tableaux ingrédients et quantités pour pouvoir concatener les données
     const ingrédientsQuantités = ingrédients.map((ingrédient, index) => ({
       ingrédient: ingrédient,
       quantité: quantités[index],
     }));
+
     return (
       <>
         <View style={styles.pic}>
@@ -47,11 +50,13 @@ export default function DetailScreen({ route, navigation }) {
           <Image style={styles.img} source={{ uri: pic }}/>
         </View>
       <Text style={styles.instruction}>Instructions : {instruction}</Text>
+      {/* Flatslist pour boucler dans le tableau pour récupérer les ingrédients et les quantités */}
       <FlatList
         data={ingrédientsQuantités}
         keyExtractor={(item, id) => id.toString()}
         renderItem={({ item }) => (
           <View style={styles.puce}>
+            {/* Vérification pour ne pas afficher l'icone ni le ":" si les valeurs d'ingrédients et quantités sont "null" */}
             {item.ingrédient && item.quantité ? <MaterialCommunityIcons name="paw" size={25} color={'black'}/> : null}
             <Text>{item.ingrédient} {item.ingrédient && item.quantité ? <Text>:</Text> : null} {item.quantité}</Text>
           </View>
