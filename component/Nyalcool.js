@@ -37,7 +37,7 @@ export default function Nyalcool (props) {
         style={styles.input}
         onChangeText={setSearchText}
         value={searchText}
-        placeholder="Search for cocktails"
+        placeholder="Entrez un alcool"
         placeholderTextColor="#aaa"
       />
       <TouchableOpacity style={styles.button} onPress={searchCocktails}>
