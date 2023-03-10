@@ -1,5 +1,6 @@
 import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { onLoadMore } from '../App';
 
 
 
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
 export default function HomeList (props) {
     const { dataList } = props.route.params 
     const navigation = useNavigation()
+    
 
     return (
     <>     
@@ -60,6 +62,8 @@ export default function HomeList (props) {
             </>
           </View>
         )}
+        onEndReached={onLoadMore}
+        onEndReachedThreshold={0.1}
       />
     </>
     )

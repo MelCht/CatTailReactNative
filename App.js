@@ -24,6 +24,8 @@ export default function App() {
 
   const [isLoading, setLoading] = useState(true);
   const [dataList, setDataList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [newDataList, setNewDataList] = useState([dataList]);
 
   const getCocktail = async () => {
     try {
@@ -32,19 +34,31 @@ export default function App() {
       return json;
     } catch (error) {
       console.error(error);
+      throw error; // relancez l'erreur pour que le rejet soit géré par le code appelant
     }
   };
 
-  const getData = async () => {
+
+  const getData = async (pageNumber) => {
     setLoading(true);
     const newDataList = [];
     for (let i = 0; i < 10; i++) {
       const data = await getCocktail();
       newDataList.push(data);
     }
-    setDataList(newDataList);
+    setDataList(prevDataList => [...prevDataList, ...newDataList]);
+    setPage(pageNumber);
     setLoading(false);
-  }
+  };
+
+    const onLoadMore = async () => {
+      const newDataList = [...dataList];
+      for (let i = 0; i < 10; i++) {
+        const data = await getCocktail();
+        newDataList.push(data);
+      }
+      setNewDataList(newDataList);
+    };
 
   useEffect(() => {
     getData();
