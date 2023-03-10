@@ -1,44 +1,13 @@
-import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
+import { Text, View,  FlatList, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-
-
-
-const styles = StyleSheet.create({
-  title: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '5%',
-    textAlign: 'center'
-  },
-  flatlist: {
-    marginTop: '10%',
-    width: '100%',
-  },
-  img: {
-    height: 150,
-    width: 150,
-    borderRadius: 50,
-    marginTop: 25,
-    marginRight: 17
-  },
-  catEars: {
-    height: 125,
-    width: 300,
-    position: 'absolute'
-  },
-  drinkCard: {
-    alignItems: 'center',
-    marginTop: '5%'
-  }
-})
+import styles from './style';
 
 
 
 export default function HomeList (props) {
   // Récupération des props passé par App.js
     const { dataList, getCocktail } = props.route.params 
-    const [oldDataList, setOldDataList] = useState([]);
     const [newDataList, setNewDataList] = useState(props.route.params.dataList);
     const navigation = useNavigation()
 
@@ -46,12 +15,10 @@ export default function HomeList (props) {
     const onLoadMore = async () => {
       const scrollDataList = [];
       for (let i = 0; i < 2; i++) {
-        console.log(i);
         const data = await getCocktail();
         scrollDataList.push(data);
       }
       setNewDataList(prevDataList => [...prevDataList, ...scrollDataList]);
-      console.log("newDataList :", newDataList);
     };
   
 
