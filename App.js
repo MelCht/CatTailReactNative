@@ -24,8 +24,7 @@ export default function App() {
 
   const [isLoading, setLoading] = useState(true);
   const [dataList, setDataList] = useState([]);
-  const [page, setPage] = useState(1);
-  const [newDataList, setNewDataList] = useState([dataList]);
+  const [newDataList, setNewDataList] = useState([]);
 
   const getCocktail = async () => {
     try {
@@ -46,8 +45,10 @@ export default function App() {
       const data = await getCocktail();
       newDataList.push(data);
     }
-    setDataList(prevDataList => [...prevDataList, ...newDataList]);
-    setPage(pageNumber);
+    setDataList(prevDataList => [
+      ...prevDataList,
+      ...newDataList.map((data, index) => ({...data, key: data.drinks[0].idDrink.toString() + '-' + index}))
+    ]);
     setLoading(false);
   };
 
@@ -58,7 +59,9 @@ export default function App() {
         newDataList.push(data);
       }
       setNewDataList(newDataList);
+      setDataList([...dataList, ...newDataList]);
     };
+
 
   useEffect(() => {
     getData();
@@ -75,7 +78,7 @@ export default function App() {
         <Tab.Screen
           name="CatTail"
           component={HomeStack}
-          initialParams={{ dataList : dataList }}
+          initialParams={{ dataList : dataList, onLoadMore : onLoadMore }}
           options={{
             tabBarIcon: () => (
               <MaterialCommunityIcons name="glass-cocktail" size={25} color={'white'}/>
