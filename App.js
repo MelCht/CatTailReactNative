@@ -36,7 +36,6 @@ export default function App() {
       return json;
     } catch (error) {
       console.error(error);
-      throw error; // relancez l'erreur pour que le rejet soit géré par le code appelant
     }
   };
 
@@ -48,15 +47,9 @@ export default function App() {
       const data = await getCocktail();
       newDataList.push(data);
     }
-    setDataList(prevDataList => [
-      ...prevDataList,
-      ...newDataList.map((data, index) => ({...data, key: data.drinks[0].idDrink.toString() + '-' + index}))
-    ]);
+    setDataList(newDataList);
     setLoading(false);
   };
-
-  
-
 
   useEffect(() => {
     getData();
@@ -111,9 +104,9 @@ function HomeStack(props) {
     <Stack.Navigator>
       {/* Modale de navigation principale : la liste des cocktails, avec envoi des données necessaires */}
       <Stack.Screen
-        name="10 cocktails pour vous 🐈‍⬛"
+        name="Des cocktails pour vous 🐈‍⬛"
         component={HomeList}
-        initialParams={{ dataList: props.route.params.dataList}}
+        initialParams={{ dataList: props.route.params.dataList, getCocktail : props.route.params.getCocktail}}
       />
       {/* Deuxième écran de la modale de navigation : la page détail, avec envoi des données necessaires */}
       <Stack.Screen

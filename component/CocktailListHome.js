@@ -39,26 +39,27 @@ export default function HomeList (props) {
   // Récupération des props passé par App.js
     const { dataList, getCocktail } = props.route.params 
     const [oldDataList, setOldDataList] = useState([]);
-    const [newDataList, setNewDataList] = useState([]);
+    const [newDataList, setNewDataList] = useState(props.route.params.dataList);
     const navigation = useNavigation()
 
     // Fonction pour l'infinite scroll
     const onLoadMore = async () => {
-      const scrollDataList = [...dataList];
-      for (let i = 0; i < 10; i++) {
+      const scrollDataList = [];
+      for (let i = 0; i < 2; i++) {
+        console.log(i);
         const data = await getCocktail();
         scrollDataList.push(data);
       }
-      setOldDataList(scrollDataList);
-      setNewDataList([...dataList, ...oldDataList]);
+      setNewDataList(prevDataList => [...prevDataList, ...scrollDataList]);
+      console.log("newDataList :", newDataList);
     };
-    
+  
 
     return (
     <>     
     {/* Utilisation d'une flatlist pour boucler sur les json enregistré dans "dataList" affin de tous les afficher sur la page */}
       <FlatList
-        data={dataList}
+        data={newDataList}
         style={styles.flatlist}
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => (
